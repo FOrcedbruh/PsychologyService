@@ -15,6 +15,7 @@ class RunCfg(BaseModel):
 class DBCfg(BaseModel):
     url: str = DB_URL
     echo: bool = True
+    pool_size: int = 10
 
 
 
