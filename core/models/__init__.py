@@ -1,5 +1,7 @@
 __all__ = (
-    "base",
+    "Base",
+    "Invite",
 )
 
-from core.models import base
+from .base import Base
+from .invite import Invite
