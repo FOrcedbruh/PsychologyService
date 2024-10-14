@@ -1,6 +1,6 @@
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sessionmaker
 from core.settings import settings
-from typing import AsyncGenerator, Annotated
+from typing import AsyncGenerator
 
 
 
@@ -11,14 +11,14 @@ class DB_Connection():
             echo=db_echo,
             pool_size=db_pool_size,
         )
-        self.session_factory = async_sessionmaker(
+        self.session_factory: AsyncGenerator[AsyncSession, None] = async_sessionmaker(
             bind=self.engine,
             autoflush=False,
             autocommit=False,
             expire_on_commit=False,
         )
-    async def session_creation(self) -> Annotated[AsyncGenerator, AsyncSession]:
-        async with self.session_creation() as session:
+    async def session_creation(self) -> AsyncSession:
+        async with self.session_factory() as session:
             yield session
 
 
