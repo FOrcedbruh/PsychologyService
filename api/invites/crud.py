@@ -9,6 +9,6 @@ async def create_invite(invite_in: InviteSchemaCreatePartial) -> InviteSchemaCre
         limit=invite_in.limit,
         type=invite_in.type,
         value=invite_value,
-        is_activate=True
+        is_activate=invite_in.is_activate
     )
 

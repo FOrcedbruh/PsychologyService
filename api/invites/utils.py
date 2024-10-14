@@ -18,5 +18,6 @@ def generate_invite_code(l: int = INVITE_LENGTH) -> str:
 def invite_form(invite_in: InviteSchemaCreatePartial = Body()) -> InviteSchemaCreatePartial:
     return InviteSchemaCreatePartial(
         limit=invite_in.limit,
-        type=invite_in.type
+        type=invite_in.type,
+        is_activate=invite_in.is_activate
     )
