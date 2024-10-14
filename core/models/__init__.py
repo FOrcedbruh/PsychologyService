@@ -1,11 +1,9 @@
 __all__ = (
     "Base",
-    "Disposable_Invite",
-    "Reusable_Invite",
+    "Invite",
     "User"
 )
 
 from .base import Base
-from .disposable_invite import Disposable_Invite
-from .reusable_invite import Reusable_invite
+from .invite import Invite
 from .user import User
