@@ -13,8 +13,7 @@ class User(Base):
 
     login: Mapped[str] = mapped_column(unique=True, nullable=False)
     password: Mapped[bytes] = mapped_column(nullable=True)
-    get_invite: Mapped["Invite"] = relationship(back_populates="user")
-    send_invites: Mapped[list["Invite"]] = relationship(back_populates="users")
-    get_invite_id: Mapped[int] = mapped_column(ForeignKey("invites.id"), nullable=False)
+    invite: Mapped["Invite"] = relationship(back_populates="user")
+    invite_id: Mapped[int] = mapped_column(ForeignKey("invites.id"))
     bio: Mapped[str]
     status: Mapped[str]
