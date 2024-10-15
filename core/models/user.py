@@ -13,7 +13,9 @@ class User(Base):
 
     login: Mapped[str] = mapped_column(unique=True, nullable=False)
     password: Mapped[bytes] = mapped_column(nullable=True)
+    email: Mapped[str] = mapped_column(nullable=False, unique=True)
     invite: Mapped["Invite"] = relationship(back_populates="users")
     invite_id: Mapped[int] = mapped_column(ForeignKey("invites.id"), nullable=False)
     bio: Mapped[str]
     status: Mapped[str]
+    role: Mapped[str] = mapped_column(nullable=False, default="User")
