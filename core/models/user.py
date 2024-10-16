@@ -6,6 +6,7 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from .invite import Invite
+    from .post import Post
 
 
 class User(Base):
@@ -19,3 +20,5 @@ class User(Base):
     bio: Mapped[str]
     status: Mapped[str]
     role: Mapped[str] = mapped_column(nullable=False, default="User")
+
+    posts: Mapped[list["Post"]] = relationship(back_populates="user")
