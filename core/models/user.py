@@ -17,8 +17,8 @@ class User(Base):
     email: Mapped[str] = mapped_column(nullable=False, unique=True)
     invite: Mapped["Invite"] = relationship(back_populates="users")
     invite_id: Mapped[int] = mapped_column(ForeignKey("invites.id"), nullable=False)
-    bio: Mapped[str]
-    status: Mapped[str]
+    bio: Mapped[str] = mapped_column(nullable=True)
+    status: Mapped[str] = mapped_column(nullable=True)
     role: Mapped[str] = mapped_column(nullable=False, default="User")
 
     posts: Mapped[list["Post"]] = relationship(back_populates="user")

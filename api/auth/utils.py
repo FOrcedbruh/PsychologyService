@@ -40,8 +40,8 @@ def validate_password(
 
 def RegForm(user_in: UserCreateSchema = Body()) -> UserCreateSchema:
     return UserCreateSchema(
-        **user_in.model_dump()
+        login=user_in.login,
+        email=user_in.email,
+        password=user_in.password,
+        invite_id=0
     )
-
-def InviteForm(invite_value: str = Body()) -> str:
-    return invite_value

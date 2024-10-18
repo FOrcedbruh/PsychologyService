@@ -14,5 +14,5 @@ class Post(Base):
     type: Mapped[str] = mapped_column(nullable=False)
     receiver: Mapped[str] = mapped_column(nullable=False)
 
-    user: Mapped["User"] = relationship(back_populates="post")
+    user: Mapped["User"] = relationship(back_populates="posts")
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))

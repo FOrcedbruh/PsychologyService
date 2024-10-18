@@ -27,13 +27,15 @@ async def registration(session: AsyncSession, user_in: UserCreateSchema, invite_
         )
     
     invite.limit -= 1
-    await session.commit()
     
-    
-    user_in.password = utils.encrypt_password(password=user_in.password)
-    user = User(**user_in.model_dump())
-    await session.add(user)
+    user_in_dict = user_in.model_dump()
+    user_in_dict["password"] = utils.encrypt_password(password=user_in.password)
+    user_in_dict["invite_id"] = invite.id
+    user = User(**user_in_dict)
+    session.add(user)
 
-    return user_in
+    await session.commit()
+
+    return "success"
 
 
