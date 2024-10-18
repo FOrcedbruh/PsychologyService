@@ -6,7 +6,11 @@ import os
 load_dotenv()
 
 DB_URL: str = os.environ.get("DB_URL")
+JWT_SECRET: str = os.environ.get("JWT_KEY")
 
+class JwtConfig(BaseModel):
+    secret: str = JWT_SECRET
+    algorithm: str = "HS256"
 
 class RunCfg(BaseModel):
     port: int =  8080
@@ -22,6 +26,7 @@ class DBCfg(BaseModel):
 class Settings(BaseSettings):
     run: RunCfg = RunCfg()
     db: DBCfg = DBCfg()
+    jwt: JwtConfig = JwtConfig()
 
 
 
