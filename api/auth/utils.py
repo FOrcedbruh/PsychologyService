@@ -3,8 +3,7 @@ from core.settings import settings
 import datetime
 import bcrypt
 from fastapi import Body
-from .schemas import UserCreateSchema
-
+from .schemas import UserCreateSchema, TokenResponseInfo, UserSchema, UserLoginSchema
 
 def jwt_encode(
     expires_minutes: int,
@@ -45,3 +44,31 @@ def RegForm(user_in: UserCreateSchema = Body()) -> UserCreateSchema:
         password=user_in.password,
         invite_id=0
     )
+
+def LogForm(user_in: UserLoginSchema = Body()) -> UserLoginSchema:
+    return UserLoginSchema(
+        email=user_in.email,
+        password=user_in.password
+    )
+
+
+def create_access_token(
+    user: UserSchema, 
+    expires_minutes: int = settings.jwt.access_expires_minutes
+) -> str:
+    payload: dict = {
+        "sub": user.login,
+        "email": user.email,
+        "id": user.id
+    }
+
+    return jwt_encode(payload=payload, expires_minutes=expires_minutes)
+
+def create_refresh_token(
+    user: UserSchema,
+    expires_minutes: int = settings.jwt.refresh_expires_minutes
+) -> str:
+    payload: dict = {
+        "sub": user.login,
+    }
+    return jwt_encode(payload=payload, expires_minutes=expires_minutes)

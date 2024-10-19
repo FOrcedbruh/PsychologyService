@@ -11,6 +11,8 @@ JWT_SECRET: str = os.environ.get("JWT_KEY")
 class JwtConfig(BaseModel):
     secret: str = JWT_SECRET
     algorithm: str = "HS256"
+    access_expires_minutes: int = 15
+    refresh_expires_minutes: int = 60 * 24 * 30
 
 class RunCfg(BaseModel):
     port: int =  8080
