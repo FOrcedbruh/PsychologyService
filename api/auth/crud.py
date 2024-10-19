@@ -11,17 +11,18 @@ async def registration(session: AsyncSession, user_in: UserCreateSchema, invite_
     inviteStmt = await session.execute(select(Invite).filter(Invite.value == invite_value))
     invite = inviteStmt.scalars().first()
 
-    if not invite:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Инвайт код неактивен или некорректен"
-        )
-    
-    if invite.limit == 0:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Инвайт уже был использован"
-        )
+    if user_in.is_waiting == False:
+        if not invite:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Инвайт код неактивен или некорректен"
+            )
+            
+        if invite.limit == 0:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Инвайт уже был использован"
+            )
 
     stmt = await session.execute(select(User).filter(User.email == user_in.email))
     candidate = stmt.scalars().first()
@@ -32,13 +33,16 @@ async def registration(session: AsyncSession, user_in: UserCreateSchema, invite_
             detail="Такой пользователь уже существует"
         )
     
-    invite.limit -= 1
-    if invite.limit == 0:
-        invite.is_activate = False
-    
+    if user_in.is_waiting == False:
+        invite.limit -= 1
+        if invite.limit == 0:
+            invite.is_activate = False
+        
     user_in_dict = user_in.model_dump()
     user_in_dict["password"] = utils.encrypt_password(password=user_in.password)
-    user_in_dict["invite_id"] = invite.id
+    if user_in.is_waiting == False:
+        user_in_dict["invite_id"] = invite.id
+    user_in_dict["invite_id"] = None
 
     user = User(**user_in_dict)
     session.add(user)

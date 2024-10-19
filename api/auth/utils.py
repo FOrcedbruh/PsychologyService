@@ -42,7 +42,8 @@ def RegForm(user_in: UserCreateSchema = Body()) -> UserCreateSchema:
         login=user_in.login,
         email=user_in.email,
         password=user_in.password,
-        invite_id=0
+        invite_id=None,
+        is_waiting=user_in.is_waiting
     )
 
 def LogForm(user_in: UserLoginSchema = Body()) -> UserLoginSchema:
