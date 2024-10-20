@@ -17,9 +17,14 @@ class UserLoginSchema(BaseModel):
     email: str
     password: str = Field(min_length=6)
 
-class UserReadSchema(UserSchema):
-    bio: str = Field(max_length=400)
-    status: str = Field(max_length=60)
+class UserReadSchema(BaseModel):
+    id: int
+    bio: str | None = Field(max_length=400)
+    status: str | None = Field(max_length=60)
+    login: str = Field(min_length=3)
+    invite_id: int | None
+    is_waiting: bool
+    email: EmailStr
 
 
 

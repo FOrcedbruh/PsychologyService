@@ -3,9 +3,11 @@ from fastapi import Depends, Body
 from . import utils, crud
 from sqlalchemy.ext.asyncio import AsyncSession
 from core.db_connection import db_connection
-from .schemas import UserCreateSchema, TokenResponseInfo, UserLoginSchema
+from .schemas import UserCreateSchema, TokenResponseInfo, UserLoginSchema, UserReadSchema
 
-router = APIRouter(prefix="/auth", tags=["Auth"])
+
+
+router = APIRouter(prefix="/auth", tags=["Auth"], dependencies=[Depends(utils.http_bearer)])
 
 
 @router.post("/registration", response_model=TokenResponseInfo, response_model_exclude_none=True)
@@ -22,3 +24,8 @@ async def login(
     user_in: UserLoginSchema = Depends(utils.LogForm)
 ) -> TokenResponseInfo:
     return await crud.login(session=session, user_in=user_in)
+
+
+@router.post("/users/me", response_model=UserReadSchema, response_model_exclude_none=True)
+async def get_me(data: UserReadSchema = Depends(utils.get_current_authuser)) -> UserReadSchema:
+    return crud.me(data=data)

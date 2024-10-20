@@ -1,8 +1,8 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from core.models import Invite, User
-from .schemas import UserCreateSchema, TokenResponseInfo
+from .schemas import UserCreateSchema, TokenResponseInfo, UserReadSchema
 from sqlalchemy import select
-from fastapi import HTTPException, status
+from fastapi import HTTPException, status, Depends
 from . import utils
 
 
@@ -82,3 +82,8 @@ async def login(session: AsyncSession, user_in: UserCreateSchema) -> TokenRespon
         access_token=access_token,
         refresh_token=refresh_token
     )
+
+def me(
+    data: UserReadSchema
+) -> UserReadSchema:
+    return data
