@@ -26,6 +26,11 @@ class UserReadSchema(BaseModel):
     is_waiting: bool
     email: EmailStr
 
+class UserUpdateSchema(BaseModel):
+    bio: str | None = Field(max_length=400, default=None)
+    status: str | None = Field(max_length=60, default=None)
+    email: EmailStr | None = None
+    is_waiting: bool | None = None
 
 
 class TokenResponseInfo(BaseModel):

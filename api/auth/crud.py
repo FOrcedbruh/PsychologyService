@@ -1,6 +1,6 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from core.models import Invite, User
-from .schemas import UserCreateSchema, TokenResponseInfo, UserReadSchema
+from .schemas import UserCreateSchema, TokenResponseInfo, UserReadSchema, UserUpdateSchema
 from sqlalchemy import select
 from fastapi import HTTPException, status, Depends
 from . import utils
@@ -87,3 +87,18 @@ def me(
     data: UserReadSchema
 ) -> UserReadSchema:
     return data
+
+
+async def update_user(session: AsyncSession, user_for_update: UserUpdateSchema, authUser: UserReadSchema) -> dict:
+    stmt = await session.execute(select(User).filter(User.login == authUser.login))
+    user = stmt.scalars().first()
+
+    for name, value in user_for_update.model_dump(exclude_none=True).items():
+        setattr(user, name, value)
+
+    await session.commit()
+
+    return {
+        "message": "success",
+        "status": status.HTTP_200_OK
+    }
