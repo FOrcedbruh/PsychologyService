@@ -2,7 +2,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from core.models import Invite, User
 from .schemas import UserCreateSchema, TokenResponseInfo, UserReadSchema, UserUpdateSchema
 from sqlalchemy import select
-from fastapi import HTTPException, status, Depends
+from fastapi import HTTPException, status
 from . import utils
 
 
@@ -42,7 +42,8 @@ async def registration(session: AsyncSession, user_in: UserCreateSchema, invite_
     user_in_dict["password"] = utils.encrypt_password(password=user_in.password)
     if user_in.is_waiting == False:
         user_in_dict["invite_id"] = invite.id
-    user_in_dict["invite_id"] = None
+    else:
+        user_in_dict["invite_id"] = None
 
     user = User(**user_in_dict)
     session.add(user)

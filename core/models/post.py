@@ -12,6 +12,7 @@ class Post(Base):
 
     title: Mapped[str] = mapped_column(nullable=False)
     type: Mapped[str] = mapped_column(nullable=False)
+    body: Mapped[str] = mapped_column(nullable=False, default="Начните писать...")
     receiver: Mapped[str] = mapped_column(nullable=False)
 
     user: Mapped["User"] = relationship(back_populates="posts")
