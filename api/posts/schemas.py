@@ -13,3 +13,12 @@ class PostCreateSchema(BaseModel):
 
 class PostReadSchema(PostCreateSchema):
     pass
+
+
+class PostUpdateSchema(BaseModel):
+    title: str | None = None
+    type: str | None = None
+    body: str | None = None
+    id: int | None = None
+    
+

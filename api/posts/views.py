@@ -14,3 +14,25 @@ async def create_post(
         post_in: PostCreateSchema = Depends(utils.CreateForm)
     ):
         return await crud.create_post(session=session, post_in=post_in)
+
+
+@router.patch("/update")
+async def update_post(
+        session: AsyncSession = Depends(db_connection.session_creation),
+        post_in: dict = Depends(utils.UpdateForm)
+    ):
+        return await crud.update_post(session=session, post_in=post_in)
+
+
+
+@router.delete("/erase")
+async def erase_post(
+        session: AsyncSession = Depends(db_connection.session_creation),
+        post_id: int = Depends(utils.EraseForm)
+    ):
+        return await crud.erase_post(session=session, post_id=post_id)
+
+
+
+
+
