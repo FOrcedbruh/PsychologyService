@@ -15,7 +15,7 @@ class JwtConfig(BaseModel):
     refresh_expires_minutes: int = 60 * 24 * 30
 
 class RunCfg(BaseModel):
-    port: int =  8080
+    port: int =  8000
     reload: bool = True
 
 class DBCfg(BaseModel):
