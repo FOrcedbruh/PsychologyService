@@ -23,4 +23,4 @@ def index():
 
 
 if __name__ == "__main__":
-    uvicorn.run(app="main:app", port=int(settings.run.port), host="0.0.0.0"  reload=False)
+    uvicorn.run(app="main:app", port=int(settings.run.port), host="0.0.0.0", reload=False)
