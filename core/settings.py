@@ -7,6 +7,9 @@ load_dotenv()
 
 DB_URL: str = os.environ.get("DB_URL")
 JWT_SECRET: str = os.environ.get("JWT_KEY")
+PORT: str = os.environ.get("PORT")
+HOST: str = os.environ.get("HOST")
+
 
 class JwtConfig(BaseModel):
     secret: str = JWT_SECRET
@@ -15,8 +18,9 @@ class JwtConfig(BaseModel):
     refresh_expires_minutes: int = 60 * 24 * 30
 
 class RunCfg(BaseModel):
-    port: int =  8000
+    port: int =  PORT
     reload: bool = True
+    host: str = HOST
 
 class DBCfg(BaseModel):
     url: str = DB_URL
