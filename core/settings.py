@@ -9,6 +9,7 @@ DB_URL: str = os.environ.get("DB_URL")
 JWT_SECRET: str = os.environ.get("JWT_KEY")
 PORT: str = os.environ.get("PORT")
 HOST: str = os.environ.get("HOST")
+RELOAD: str = os.environ.get("RELOAD")
 
 
 class JwtConfig(BaseModel):
@@ -18,8 +19,8 @@ class JwtConfig(BaseModel):
     refresh_expires_minutes: int = 60 * 24 * 30
 
 class RunCfg(BaseModel):
-    port: int =  PORT
-    reload: bool = True
+    port: int = PORT
+    reload: bool = RELOAD
     host: str = HOST
 
 class DBCfg(BaseModel):

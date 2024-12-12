@@ -14,7 +14,7 @@ router = APIRouter(prefix="/auth", tags=["Auth"], dependencies=[Depends(utils.ht
 async def registration(
     session: AsyncSession = Depends(db_connection.session_creation),
     user_in: UserCreateSchema = Depends(utils.RegForm),
-    invite_value: str = Body()
+    invite_value: str | None = Body()
 ) -> TokenResponseInfo:
     return await crud.registration(session=session, user_in=user_in, invite_value=invite_value)
 

@@ -7,7 +7,7 @@ from . import utils
 
 
 
-async def registration(session: AsyncSession, user_in: UserCreateSchema, invite_value: str) -> TokenResponseInfo:
+async def registration(session: AsyncSession, user_in: UserCreateSchema, invite_value: str | None = None) -> TokenResponseInfo:
     inviteStmt = await session.execute(select(Invite).filter(Invite.value == invite_value))
     invite = inviteStmt.scalars().first()
 

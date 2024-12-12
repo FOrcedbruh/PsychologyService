@@ -2,11 +2,11 @@ FROM python:3.12-slim
 
 WORKDIR /app
 
-RUN pip install poetry
+RUN pip3 install poetry
 
 COPY /pyproject.toml /app/
 
-RUN poetry config virtualenvs.create false &&  poetry install --no-root 
+RUN poetry config virtualenvs.create false &&  poetry install --no-root --no-dev
 
 COPY . /app
 

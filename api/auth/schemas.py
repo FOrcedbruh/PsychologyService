@@ -6,7 +6,6 @@ class UserCreateSchema(BaseModel):
     email: EmailStr
     password: str | bytes = Field(min_length=6),
     login: str = Field(min_length=3)
-    invite_id: int | None
     is_waiting: bool
 
 
