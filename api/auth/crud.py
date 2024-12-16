@@ -1,9 +1,10 @@
 from sqlalchemy.ext.asyncio import AsyncSession
-from core.models import Invite, User
+from core.models import Invite, User, Confirmation_Code
 from .schemas import UserCreateSchema, TokenResponseInfo, UserReadSchema, UserUpdateSchema
 from sqlalchemy import select
 from fastapi import HTTPException, status
 from . import utils
+import random
 
 
 
@@ -90,6 +91,7 @@ def me(
     return data
 
 
+
 async def update_user(session: AsyncSession, user_for_update: UserUpdateSchema, authUser: UserReadSchema) -> dict:
     stmt = await session.execute(select(User).filter(User.login == authUser.login))
     user = stmt.scalars().first()
@@ -103,3 +105,38 @@ async def update_user(session: AsyncSession, user_for_update: UserUpdateSchema, 
         "message": "success",
         "status": status.HTTP_200_OK
     }
+
+
+
+async def change_password_request(session: AsyncSession, email_in: str, username: str) -> dict:
+    stmt = await session.execute(select(User).where(User.email == email_in))
+    user = stmt.scalar()
+
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_406_NOT_ACCEPTABLE,
+            detail=f"Пользователя с почтой {email_in} не существует"
+        )
+    
+    # логика отправки данных на mail_sender
+    secret: list[int] = [1, 2, 3, 4, 5, 6]
+    random.shuffle(secret)
+    secret_val: str = "".join([str(x) for x in secret])
+
+    secret_dict = {}
+    secret_dict["value"] = secret_val
+    secret_dict["user_email"] = email_in
+
+
+    confirmation_code = Confirmation_Code(**secret_dict)
+    session.add(confirmation_code)
+    await session.commit()
+
+    return {
+        "status": status.HTTP_201_CREATED,
+        "message": "Код подтверждения успешно создан"
+    }
+
+
+async def change_password_confirm(session: AsyncSession, confirmation_code: str) -> dict:
+    pass

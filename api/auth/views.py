@@ -11,7 +11,7 @@ router = APIRouter(prefix="/auth", tags=["Auth"], dependencies=[Depends(utils.ht
 
 
 @router.post("/registration", response_model=TokenResponseInfo, response_model_exclude_none=True)
-async def registration(
+async def index(
     session: AsyncSession = Depends(db_connection.session_creation),
     user_in: UserCreateSchema = Depends(utils.RegForm),
     invite_value: str | None = Body()
@@ -19,7 +19,7 @@ async def registration(
     return await crud.registration(session=session, user_in=user_in, invite_value=invite_value)
 
 @router.post("/login", response_model=TokenResponseInfo, response_model_exclude_none=True)
-async def login(
+async def index(
     session: AsyncSession = Depends(db_connection.session_creation),
     user_in: UserLoginSchema = Depends(utils.LogForm)
 ) -> TokenResponseInfo:
@@ -27,9 +27,18 @@ async def login(
 
 
 @router.post("/users/me", response_model=UserReadSchema, response_model_exclude_none=True)
-async def get_me(data: UserReadSchema = Depends(utils.get_current_authuser)) -> UserReadSchema:
+async def index(data: UserReadSchema = Depends(utils.get_current_authuser)) -> UserReadSchema:
     return crud.me(data=data)
 
-@router.patch("/user/update")
-async def update_user(session: AsyncSession = Depends(db_connection.session_creation), user_for_update: UserUpdateSchema = Body(), authUser: UserUpdateSchema = Depends(utils.get_current_authuser)):
+@router.patch("/users/update")
+async def index(session: AsyncSession = Depends(db_connection.session_creation), user_for_update: UserUpdateSchema = Body(), authUser: UserUpdateSchema = Depends(utils.get_current_authuser)):
     return await crud.update_user(session=session, user_for_update=user_for_update, authUser=authUser)
+
+
+@router.post("/users/change_password_request")
+async def index(
+    session: AsyncSession = Depends(db_connection.session_creation),
+    email_in: str = Body(),
+    username: str = Body()
+):
+    return await crud.change_password_request(session=session, email_in=email_in, username=username)
