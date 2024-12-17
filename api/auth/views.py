@@ -35,10 +35,18 @@ async def index(session: AsyncSession = Depends(db_connection.session_creation),
     return await crud.update_user(session=session, user_for_update=user_for_update, authUser=authUser)
 
 
-@router.post("/users/change_password_request")
+@router.post("/users/change_password")
 async def index(
     session: AsyncSession = Depends(db_connection.session_creation),
     email_in: str = Body(),
     username: str = Body()
 ):
     return await crud.change_password_request(session=session, email_in=email_in, username=username)
+
+
+@router.post("/users/change_password/confirm")
+async def index(
+    session: AsyncSession = Depends(db_connection.session_creation),
+    confirmation_code_in: str = Body()
+) -> dict:
+    return await crud.change_password_confirm(session=session, confirmation_code_in=confirmation_code_in)

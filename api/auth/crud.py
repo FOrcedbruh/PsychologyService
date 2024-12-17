@@ -138,5 +138,20 @@ async def change_password_request(session: AsyncSession, email_in: str, username
     }
 
 
-async def change_password_confirm(session: AsyncSession, confirmation_code: str) -> dict:
-    pass
+async def change_password_confirm(session: AsyncSession, confirmation_code_in: str) -> dict:
+    stmt = await session.execute(select(Confirmation_Code).where(Confirmation_Code.value == confirmation_code_in))
+    confirmation_code = stmt.scalar()
+
+    if not confirmation_code:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Неверный код"
+        )
+    
+    await session.delete(confirmation_code)
+    await session.commit()
+    
+    return {
+        "status": status.HTTP_200_OK,
+        "isVerify": True
+    }
