@@ -4,7 +4,6 @@ from .schemas import UserCreateSchema, TokenResponseInfo, UserReadSchema, UserUp
 from sqlalchemy import select
 from fastapi import HTTPException, status
 from . import utils
-import random
 
 
 
@@ -118,15 +117,11 @@ async def change_password_request(session: AsyncSession, email_in: str, username
             detail=f"Пользователя с почтой {email_in} не существует"
         )
     
-    # логика отправки данных на mail_sender
-    secret: list[int] = [1, 2, 3, 4, 5, 6]
-    random.shuffle(secret)
-    secret_val: str = "".join([str(x) for x in secret])
-
+    
+    code = await utils.get_confirmation_code(name=username,email=email_in)
     secret_dict = {}
-    secret_dict["value"] = secret_val
+    secret_dict["value"] = code.json()["code"]
     secret_dict["user_email"] = email_in
-
 
     confirmation_code = Confirmation_Code(**secret_dict)
     session.add(confirmation_code)

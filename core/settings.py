@@ -10,7 +10,7 @@ JWT_SECRET: str = os.environ.get("JWT_KEY")
 PORT: str = os.environ.get("PORT")
 HOST: str = os.environ.get("HOST")
 RELOAD: str = os.environ.get("RELOAD")
-
+MAIL_SENDER_URL: str = os.environ.get("MAIL_SENDER_URL")
 
 class JwtConfig(BaseModel):
     secret: str = JWT_SECRET
@@ -28,12 +28,16 @@ class DBCfg(BaseModel):
     echo: bool = True
     pool_size: int = 10
 
+class MailServiceCfg(BaseModel):
+    base_url: str = MAIL_SENDER_URL
+
 
 
 class Settings(BaseSettings):
     run: RunCfg = RunCfg()
     db: DBCfg = DBCfg()
     jwt: JwtConfig = JwtConfig()
+    mail_sender: MailServiceCfg = MailServiceCfg()
 
 
 

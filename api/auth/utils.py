@@ -10,6 +10,9 @@ from core.db_connection import db_connection
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from core.models import User
+import requests
+
+
 
 http_bearer = HTTPBearer(auto_error=False)
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/auth/login/")
@@ -129,3 +132,18 @@ async def get_current_authuser(
         is_waiting=user.is_waiting,
         invite_id=user.invite_id,
     )
+
+async def get_confirmation_code(email: str, name: str, base_url: str = settings.mail_sender.base_url) -> requests.Response:
+    res: requests.Response = requests.post(url=f"{base_url}sendemail", json={
+        "email": email,
+        "name": name
+        }
+    )
+
+    if res.status_code != 200:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Ошибка на сервере mail sender: {res.status_code} error"
+        )
+
+    return res
