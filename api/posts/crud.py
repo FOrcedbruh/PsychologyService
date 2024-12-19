@@ -51,4 +51,14 @@ async def update_post(session: AsyncSession, post_in: PostUpdateSchema):
         "updated_post": post_to_update
     }
 
+async def get_post(session: AsyncSession, post_id: int) -> Post:
+    post = await session.get(Post, post_id)
+
+
+    if not post:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Пост не найден"
+        )
     
+    return post

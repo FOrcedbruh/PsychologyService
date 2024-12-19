@@ -32,6 +32,13 @@ async def erase_post(
     ):
         return await crud.erase_post(session=session, post_id=post_id)
 
+@router.get("/{post_id}")
+async def index(
+    post_id: int,
+    session: AsyncSession = Depends(db_connection.session_creation)
+):
+    return await crud.get_post(session=session, post_id=post_id)
+
 
 
 
