@@ -150,3 +150,22 @@ async def change_password_confirm(session: AsyncSession, confirmation_code_in: s
         "status": status.HTTP_200_OK,
         "isVerify": True
     }
+
+async def update_password(session: AsyncSession, authUser: UserReadSchema, new_password_in: str) -> dict:
+    user_for_update = await session.get(User, authUser.id)
+
+    if not user_for_update:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Пользователь не найден"
+        )
+    
+    new_password_hash = utils.encrypt_password(new_password_in)
+    user_for_update.password = new_password_hash
+    await session.commit()
+
+
+    return {
+        "status": status.HTTP_200_OK,
+        "detail": "Пароль успешно обновлен"
+    }

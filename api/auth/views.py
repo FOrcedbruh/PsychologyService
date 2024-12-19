@@ -50,3 +50,12 @@ async def index(
     confirmation_code_in: str = Body()
 ) -> dict:
     return await crud.change_password_confirm(session=session, confirmation_code_in=confirmation_code_in)
+
+
+@router.patch("/users/me/update_password")
+async def index(
+    session: AsyncSession = Depends(db_connection.session_creation),
+    authUser: UserReadSchema = Depends(utils.get_current_authuser),
+    new_password_in: str = Body()
+) -> dict:
+    return await crud.update_password(session=session, authUser=authUser, new_password_in=new_password_in)

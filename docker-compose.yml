@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  app:
+    container_name: psycho_app
+    build: .
+    command: bash -c 'while !</dev/tcp/db/5432; do sleep 1; done; uvicorn main:app --host 0.0.0.0 --port ${PORT}'
+    volumes:
+      - .:/app
+    ports:
+      - "${PORT}:7979"
+    env_file:
+      - .env
+    environment:
+      - DATABASE_URL=${DB_URL}
+    depends_on:
+      - db
+
+  db:
+    container_name: postgres_db
+    image: postgres:17-alpine
+    ports:
+      - "5433:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=psychologyServiceDB
+    volumes:
+      - postgres_data:/var/lib/postgresql/postgres_data
+
+volumes:
+  postgres_data:
