@@ -18,5 +18,6 @@ class User(Base):
     email: Mapped[str] = mapped_column(unique=True, nullable=True)
     tel: Mapped[str] = mapped_column(unique=True, nullable=True)
     hobbies: Mapped[list[str]] = mapped_column(MutableList.as_mutable(ARRAY(String)), nullable=True)
+    profile_image: Mapped[str] = mapped_column(unique=True, nullable=True)
 
     posts: Mapped[list["Post"]] = relationship(back_populates="user")

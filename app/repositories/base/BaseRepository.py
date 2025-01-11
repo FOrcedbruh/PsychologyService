@@ -42,7 +42,6 @@ class BaseRepository(Generic[TableType]):
         if not res:
             raise self.exception
 
-
         await self.session.delete(res)
         await self.session.commit()
 
