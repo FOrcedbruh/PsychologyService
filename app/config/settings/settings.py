@@ -6,11 +6,27 @@ import os
 load_dotenv()
 
 DB_URL: str = os.environ.get("DB_URL")
+#=======
 JWT_SECRET: str = os.environ.get("JWT_KEY")
+#=======
 PORT: str = os.environ.get("PORT")
 HOST: str = os.environ.get("HOST")
 RELOAD: str = os.environ.get("RELOAD")
+#=======
 MAIL_SENDER_URL: str = os.environ.get("MAIL_SENDER_URL")
+#=======
+S3_GET_URL: str = os.environ.get("S3_GET_URL")
+S3_URL: str = os.environ.get("S3_URL")
+S3_SECRET_KEY: str = os.environ.get("S3_SECRET_KEY")
+S3_ACCESS_KEY: str = os.environ.get("S3_ACCESS_KEY")
+S3_BUCKET_NAME_IMAGES: str = os.environ.get("S3_BUCKET_NAME_IMAGES")
+
+class S3Cfg(BaseModel):
+    url: str = S3_URL
+    get_url: str = S3_GET_URL
+    images_bucket_name: str = S3_BUCKET_NAME_IMAGES
+    secret_key: str = S3_SECRET_KEY
+    access_key: str = S3_ACCESS_KEY
 
 class JwtCfg(BaseModel):
     secret: str = JWT_SECRET
@@ -40,6 +56,7 @@ class Settings(BaseSettings):
     db: DBCfg = DBCfg()
     jwt: JwtCfg = JwtCfg()
     mail_sender: MailServiceCfg = MailServiceCfg()
+    s3: S3Cfg = S3Cfg()
 
 
 

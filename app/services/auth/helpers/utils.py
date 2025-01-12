@@ -13,7 +13,7 @@ def create_access_token(
 ) -> str:
     payload: dict = {
         "sub": str(user.telegram_user_id),
-        "fisrtname": user.fisrtname,
+        "fisrtname": user.firstname,
         "lastname": user.lastname,
         "type": ACCESS_TOKEN_TYPE,
         "id": user.id

@@ -26,3 +26,16 @@ class UserRepository(BaseRepository[User]):
         await self.session.refresh(res)
 
         return res
+    
+    async def change_profile_image(self, id: int, data: str) -> User:
+        res = await self.session.get(self.table, id)
+        if not res:
+            raise self.exception
+        
+        res.profile_image = data
+
+        await self.session.commit()
+        await self.session.refresh(res)
+
+        return res
+        
