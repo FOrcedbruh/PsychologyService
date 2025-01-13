@@ -20,6 +20,8 @@ class UserService:
             "message": "Пользователь успешно удален"
         }
     
-    async def change_profile_image(self, user_id: int, object, s3_repository: S3Repository) -> UserReadSchema:
+    async def change_profile_image(self, user_id: int, object, s3_repository: S3Repository, key: str | None = None, ) -> UserReadSchema:
         url: str = await s3_repository.upload_object(file=object)
+        if key is not None:
+            await s3_repository.delete_object(filename=key)
         return await self.repository.change_profile_image(id=user_id, data=url)

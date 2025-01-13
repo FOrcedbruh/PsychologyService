@@ -5,8 +5,9 @@ from datetime import datetime
 
 class UserLoginSchema(BaseModel):
     telegram_user_id: int
-    firstname: str
-    lastname: str
+    first_name: str
+    last_name: str | None = None
+    profile_image: str | None = None
 
 class UserReadSchema(UserLoginSchema):
     id: int
@@ -20,4 +21,13 @@ class UserUpdateSchema(BaseModel):
     email: EmailStr | None = None
     tel: str | None = None
     hobbies: list[str] | None = None
+
+class UserAuthTelegramData(BaseModel):
+    id: int
+    username: str
+    hash: str
+    first_name: str | None = None
+    last_name: str | None = None
+    photo_url: str
+    auth_date: int
 

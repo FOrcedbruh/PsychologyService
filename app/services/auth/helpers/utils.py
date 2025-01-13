@@ -1,5 +1,5 @@
 from config import settings
-from dto.users import UserLoginSchema
+from dto.users import UserLoginSchema, UserAuthTelegramData
 from jwt.exceptions import InvalidTokenError
 from ..exceptions.exceptions import UnAuthException, UN_AUTH_EXCEPTION_STATUS, TokenTypeException, TOKEN_TYPE_EXCEPTION_STATUS
 from .token_helpers import jwt_decode, jwt_encode
@@ -13,8 +13,8 @@ def create_access_token(
 ) -> str:
     payload: dict = {
         "sub": str(user.telegram_user_id),
-        "fisrtname": user.firstname,
-        "lastname": user.lastname,
+        "first_name": user.first_name,
+        "last_name": user.last_name,
         "type": ACCESS_TOKEN_TYPE,
         "id": user.id
     }
@@ -65,3 +65,12 @@ def get_current_auth_user_for_refresh(
             expected_token_type=REFRESH_TOKEN_TYPE
         )
     return telegram_user_id
+
+
+def tg_user_to_user(tg_user: UserAuthTelegramData) -> UserLoginSchema:
+    return UserLoginSchema(
+        telegram_user_id=tg_user.id,
+        first_name=tg_user.first_name,
+        last_name=tg_user.last_name,
+        profile_image=tg_user.photo_url
+    )

@@ -16,6 +16,7 @@ async def index(
 ) -> UserReadSchema:
     return await service.update_user(user_id=user_id, user_in=user_in)
 
+
 @router.delete("/{user_id}", response_model=dict)
 async def index(
     user_id: int,
@@ -23,11 +24,13 @@ async def index(
 ) -> dict:
     return await service.delete_user(user_id=user_id)
 
+
 @router.patch("/profile-image/{user_id}", response_model=UserReadSchema)
 async def index(
     user_id: int,
     object: UploadFile = File(),
+    key: str | None = Body(default=None),
     service: UserService = Depends(get_user_service),
     s3_repository: S3Repository = Depends(get_s3_repository_for_images_bucket)
 ) -> UserReadSchema:
-    return await service.change_profile_image(user_id=user_id, object=object, s3_repository=s3_repository)
+    return await service.change_profile_image(user_id=user_id, object=object, key=key, s3_repository=s3_repository)

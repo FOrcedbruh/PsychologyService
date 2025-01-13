@@ -18,3 +18,10 @@ class TokenTypeException(AuthBaseException):
     def __init__(self, status: int, expected_token_type: str):
         super().__init__(status=status, detail=f"Ожидается тип токена {expected_token_type}")
         self.status = status
+
+AUTH_VERIFICATION_EXCEPTION_STATUS: int = 400
+AUTH_VERIFICATION_EXCEPTION_DETAIL: str = "Авторизация с подписью, которая не является подлинной"
+
+class AuthVerificationException(AuthBaseException):
+    def __init__(self, status: int, detail: str):
+        super().__init__(status=status, detail=detail)

@@ -20,6 +20,11 @@ S3_URL: str = os.environ.get("S3_URL")
 S3_SECRET_KEY: str = os.environ.get("S3_SECRET_KEY")
 S3_ACCESS_KEY: str = os.environ.get("S3_ACCESS_KEY")
 S3_BUCKET_NAME_IMAGES: str = os.environ.get("S3_BUCKET_NAME_IMAGES")
+#=======
+AUTH_BOT_TOKEN: str = os.environ.get("AUTH_BOT_TOKEN")
+
+class TelegramCfg(BaseModel):
+    bot_token: str = AUTH_BOT_TOKEN
 
 class S3Cfg(BaseModel):
     url: str = S3_URL
@@ -57,6 +62,7 @@ class Settings(BaseSettings):
     jwt: JwtCfg = JwtCfg()
     mail_sender: MailServiceCfg = MailServiceCfg()
     s3: S3Cfg = S3Cfg()
+    telegram: TelegramCfg = TelegramCfg()
 
 
 

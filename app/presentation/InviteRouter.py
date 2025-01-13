@@ -21,6 +21,7 @@ async def index(
 ) -> list[InviteReadSchema]:
     return await service.get_invites()
 
+
 @router.delete("/", response_model=dict)
 async def index(
     invite_id: int,
