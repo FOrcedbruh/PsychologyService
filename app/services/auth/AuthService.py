@@ -49,6 +49,3 @@ class AuthService:
         return TokenInfo(
             access_token=access_token
         )
-    
-    async def check_hash(self, auth_data: UserAuthTelegramData) -> UserAuthTelegramData:
-        return verification_hash(data=auth_data, bot_token=settings.telegram.bot_token)

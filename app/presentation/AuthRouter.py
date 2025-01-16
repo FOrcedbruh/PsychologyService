@@ -2,7 +2,7 @@ from fastapi import APIRouter
 from dependencies import get_auth_service
 from services import AuthService
 from fastapi import Depends, Body
-from dto.users import UserLoginSchema, UserReadSchema, UserAuthTelegramData
+from dto.users import UserReadSchema, UserAuthTelegramData
 from dto.jwt_token import TokenInfo
 from fastapi.security import HTTPBearer, OAuth2PasswordBearer
 
@@ -35,10 +35,3 @@ async def index(
     service: AuthService = Depends(get_auth_service)
 ) -> TokenInfo:
     return await service.refresh(token=token)
-
-@router.post("/check_hash")
-async def index(
-    auth_data: UserAuthTelegramData = Body(),
-    service: AuthService = Depends(get_auth_service)
-):
-    return await service.check_hash(auth_data=auth_data)
