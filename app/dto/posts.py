@@ -1,4 +1,5 @@
 from pydantic import BaseModel, Field
+from datetime import datetime 
 
 class PostCreateSchema(BaseModel):
     title: str
@@ -9,7 +10,8 @@ class PostCreateSchema(BaseModel):
 
 
 class PostReadSchema(PostCreateSchema):
-    pass
+    id: int
+    created_at: datetime
 
 
 class PostUpdateSchema(BaseModel):

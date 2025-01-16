@@ -17,7 +17,7 @@ class AuthRepository(BaseRepository[User]):
 
     async def get_one_by_telegram_user_id(self, id: int) -> User:
         query = select(self.table).where(self.table.telegram_user_id == id)
-        stmt = await self.session.execute(query)
+        stmt =  await self.session.execute(query)
         res = stmt.scalar()
 
         return res
